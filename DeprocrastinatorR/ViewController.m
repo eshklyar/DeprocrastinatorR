@@ -8,7 +8,9 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <UITableViewDataSource, UITabBarDelegate, UITextFieldDelegate>
+@property (strong, nonatomic) IBOutlet UITableView *myTableView;
+@property (weak, nonatomic) IBOutlet UITextField *myTextField;
 
 @end
 
@@ -16,12 +18,45 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+//    self.tableView = [[UITableView alloc]init];
+//    [self.tableView reloadData];
+//    self.tableView.delegate = self;
+}
+- (IBAction)onAddBtnPressed:(id)sender {
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+NSLog(@"bla");
+
+    UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (cell == nil)
+    {
+        NSLog(@"bla");
+        cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    }
+    cell.textLabel.text =@"hello world";
+    cell.backgroundColor = [UIColor greenColor];
+
+//    cell.textLabel.description = @"oh well";
+    cell.tintColor = [UIColor blueColor];
+
+    return cell;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    return 4;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+
+    return YES;
+}
 @end
