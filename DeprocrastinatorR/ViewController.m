@@ -9,8 +9,8 @@
 #import "ViewController.h"
 
 @interface ViewController () <UITableViewDataSource, UITabBarDelegate, UITextFieldDelegate>
-@property (strong, nonatomic) IBOutlet UITableView *myTableView;
-@property (weak, nonatomic) IBOutlet UITextField *myTextField;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITextField *textField;
 
 @end
 
