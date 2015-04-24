@@ -41,12 +41,31 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="392" id="wzF-pG-9Lh"/>
                                 </constraints>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="UM2-Ke-jPu" style="IBUITableViewCellStyleDefault" id="vnL-ha-Fbf">
+                                        <rect key="frame" x="0.0" y="0.0" width="605" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vnL-ha-Fbf" id="iSl-Py-B51">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UM2-Ke-jPu">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="WUl-OY-aDP"/>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="L74-Fd-j5f"/>
                                 </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="fDM-53-GEU" firstAttribute="leading" secondItem="v4U-1I-eXj" secondAttribute="trailing" constant="91" id="0mY-4c-shE"/>
                             <constraint firstItem="v4U-1I-eXj" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="12" id="10b-zs-TgF"/>
@@ -56,6 +75,9 @@
                             <constraint firstAttribute="trailing" secondItem="EXx-z5-0eS" secondAttribute="trailing" constant="-5" id="xlc-QJ-IKv"/>
                             <constraint firstItem="EXx-z5-0eS" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="zHy-zS-93w"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="cZc-Qw-wzw" appends="YES" id="srP-Bl-nD7"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Deprocrastinator" id="7O5-go-LVL"/>
                     <connections>
@@ -64,6 +86,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="cZc-Qw-wzw">
+                    <connections>
+                        <action selector="tapped:" destination="vXZ-lx-hvc" id="NMi-1t-iMN"/>
+                        <outlet property="delegate" destination="vXZ-lx-hvc" id="TFI-9h-VA5"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1117" y="359"/>
         </scene>
