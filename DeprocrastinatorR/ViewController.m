@@ -31,108 +31,36 @@
 - (IBAction)tapped:(UITapGestureRecognizer *)gesture {
     CGPoint point = [gesture locationInView:self.tableView];
 
-     self.selectedIndexPath=[self.tableView indexPathForRowAtPoint:point];
-//    NSLog(@"selectedIndexPath, %ld",(long)self.selectedIndexPath.row);
+    self.selectedIndexPath=[self.tableView indexPathForRowAtPoint:point];
 
 
-    if (self.edit)
-
+    if ((self.array.count !=0) && (self.checks.count !=0))
     {
-//        NSLog(@"my check 1 %@",self.checks);
-
-        [self.array removeObjectAtIndex:self.selectedIndexPath.row];
-        [self.checks removeObjectAtIndex:self.selectedIndexPath.row];
-
-    }
-    else
-    {
-//        NSLog(@"my check 2 %@",self.checks);
-//        NSLog(@"my check %@",[self.checks objectAtIndex:self.selectedIndexPath.row]);
-
-
-        if ([[self.checks objectAtIndex:self.selectedIndexPath.row] isEqualToNumber:[NSNumber numberWithBool:0]])
+        if (!self.edit)
         {
-            [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@YES];
-            NSLog(@"YES");
+            if ([[self.checks objectAtIndex:self.selectedIndexPath.row] isEqualToNumber:[NSNumber numberWithBool:0]])
+                [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@YES];
+            else
+                [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@NO];
         }
         else
         {
-            [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@NO];
-
-            NSLog(@"NO");
+            [self.array removeObjectAtIndex:self.selectedIndexPath.row];
+            [self.checks removeObjectAtIndex:self.selectedIndexPath.row];
         }
-//        NSLog(@"my check 3 %@",self.checks);
-    }
-
-
-
-
-//__________________
 
         [self markRowsWithCheck:self.selectedIndexPath];
-//        for (int i=0; i< self.checks.count; i++)
-//        {
-//            if (([self.checks[i] isEqualToNumber:[NSNumber numberWithBool:1]]))
-//            {
-//                NSLog(@"match %d", self.selectedIndexPath.row);
-//
-//                [self.tableView cellForRowAtIndexPath:self.selectedIndexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-//                 [self.tableView reloadData];
-//            }
-//            else
-//            {
-//                [self.tableView cellForRowAtIndexPath:self.selectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
-//                 NSLog(@"no match %d", self.selectedIndexPath.row);
-//
-//
-//                 [self.tableView reloadData];
-//            }
-////            [self.tableView reloadData];
-//
-//         }
-//      }
-//    [self.tableView reloadData];
 
-//    else{
-//        NSLog(@"no edit");
-//
-//        if([self.tableView cellForRowAtIndexPath:self.selectedIndexPath].accessoryType == UITableViewCellAccessoryNone){
-//
-////            [self.tableView cellForRowAtIndexPath:self.selectedIndexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-//            [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@YES];
-//            NSLog(@"yes");
-//            NSLog(@"checks 1 %@", self.checks);
-//        }
-//        else
-//            {
-////            [self.tableView cellForRowAtIndexPath:self.selectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
-//            [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@NO];
-//            NSLog(@"checks 2 %@", self.checks);
-//            NSLog(@"no");
-//            }
-
+    }
 
 }
 -(void)markRowsWithCheck:(NSIndexPath *)indexPath
 {
+    if (([self.checks[indexPath.row] isEqualToNumber:[NSNumber numberWithBool:1]]))
+        [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
 
-    NSLog(@"markRowsWithCheck call");
-    NSLog(@"my check 4 %@",self.checks);
-
-
-
-        if (([self.checks[indexPath.row] isEqualToNumber:[NSNumber numberWithBool:1]]))
-        {
-            NSLog(@"match %d", indexPath.row);
-
-            [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-//            [self.tableView reloadData];
-        }
-        else
-        {
-            [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
-            NSLog(@"no match %d", indexPath.row);
-        }
+    else
+        [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
 
      [self.tableView reloadData];
 }
@@ -142,10 +70,8 @@
 
     [self.textField resignFirstResponder];
     [self.tableView reloadData];
-//    NSLog(@"bla");
 }
 - (IBAction)onEditButtonPressed:(id)sender {
-//    [sender setTitle:@"Done"];
     UIButton *button = (UIButton*)sender;
     button.titleLabel.text = @"hello";
 
@@ -156,90 +82,30 @@
     else{
          [sender setTitle:@"Edit" forState:UIControlStateNormal];
         self.edit=NO;
-
     }
 
-//    sender.textLebel.text =@"Done";
 }
 //selected? highlighted
 -(void)viewDidAppear:(BOOL)animated{
-//    NSIndexPath =
-    [self.tableView selectRowAtIndexPath:self.selectedIndexPath
-                            animated:NO
-                      scrollPosition:UITableViewScrollPositionNone];
-
+    [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark tableView
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
     UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil)
-    {
         cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-    }
-    cell.textLabel.text = [self.array objectAtIndex:indexPath.row];
 
-    if ([[self.checks objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithBool:0]]) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        NSLog(@"XXX %@", self.checks);
-    }
-    else{
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-         NSLog(@"WWW %@", self.checks);
-    }
-//    for (int i=0; i< self.checks.count; i++)
-//    {
-//        if (([self.checks[i] isEqualToNumber:[NSNumber numberWithBool:1]]))
-//        {
-//            NSLog(@"match in cell");
-//            [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-//        }
-//        else
-//        {
-//            [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
-//            NSLog(@"no match in cell");
-//        }
-////        [self.tableView reloadData];
-//
-//    }
+        cell.textLabel.text = [self.array objectAtIndex:indexPath.row];
 
-//     NSLog(@"checks array at iddex %ld %@ ", (long)indexPath.row, [self.checks objectAtIndex:indexPath.row]);
-//     NSLog(@"checks array %@", self.checks);
+        if ([[self.checks objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithBool:0]])
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        else
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-//***    NSLog(@"cheching in cell %@",[self.checks objectAtIndex:indexPath.row]);
-//    if ([[self.checks objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithBool:1]])
-//    {
-//***    NSLog(@"check");
-//         [self.tableView cellForRowAtIndexPath:self.selectedIndexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-
-//    }
-//    else{
-//        [self.tableView cellForRowAtIndexPath:self.selectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
-//***         NSLog(@"none");
-//         [self.tableView reloadData];
-
-//    }
-//       NSLog(@"indexpath, %@", indexPath);
-//     NSLog(@"Selected indexpath, %@", self.selectedIndexPath);
-//    cell.detailTextLabel.text =@"bla";
-//    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-//
-//    if ([self.selectedIndexPath isEqual:indexPath]) {//if it was already selected
-//        [tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-////        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-//
-//         NSLog(@"selectedIndexPath = indexPath");
-//    }
-//    else{
-//        NSLog(@"selectedIndexPath != indexPath");
-//    NSLog(@"selectedIndexPath %@",self.selectedIndexPath);
-//    NSLog(@"indexPath %@",indexPath);
-//    }
-// [self.tableView reloadData];
-
-    return cell;
+return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
