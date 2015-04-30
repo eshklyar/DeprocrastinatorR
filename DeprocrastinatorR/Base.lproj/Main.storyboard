@@ -86,6 +86,7 @@
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="cZc-Qw-wzw" appends="YES" id="srP-Bl-nD7"/>
+                            <outletCollection property="gestureRecognizers" destination="jwu-OW-wYR" appends="YES" id="S7e-Am-6Zh"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Deprocrastinator" id="7O5-go-LVL"/>
@@ -101,6 +102,11 @@
                         <outlet property="delegate" destination="vXZ-lx-hvc" id="TFI-9h-VA5"/>
                     </connections>
                 </tapGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="jwu-OW-wYR">
+                    <connections>
+                        <action selector="swipeToChangeColor:" destination="vXZ-lx-hvc" id="BtK-Sj-MnC"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1117" y="359"/>
         </scene>

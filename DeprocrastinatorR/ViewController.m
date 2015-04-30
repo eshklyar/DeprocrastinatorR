@@ -16,6 +16,8 @@
 @property NSIndexPath* selectedIndexPath;
 @property BOOL edit;
 @property NSMutableArray *checks;
+@property BOOL swipe;
+@property NSIndexPath *swipePath;
 
 @end
 
@@ -26,8 +28,96 @@
 
     self.array =[NSMutableArray new];
     self.edit=NO;
+    self.swipe = NO;
     self.checks = [NSMutableArray new];
+    self.swipePath = [[NSIndexPath alloc]init];
 }
+- (IBAction)swipeToChangeColor:(UISwipeGestureRecognizer *)swipeGesture {
+
+    CGPoint point = [swipeGesture locationInView:self.tableView];
+     [swipeGesture setDirection:(UISwipeGestureRecognizerDirectionRight)];
+
+    NSIndexPath *path = [self.tableView indexPathForRowAtPoint:point];
+
+    NSIndexPath *oldPath;
+    if ([oldPath isEqual:path]) {
+        NSLog(@"equal");
+    } else {
+        NSLog(@"not equal");
+
+    }
+
+    int priority = 0;
+
+    if ([path isEqual:oldPath]) {
+        priority++;
+    }
+
+    switch (priority)
+
+    {
+        case 1:
+
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor redColor];
+
+            NSLog(@"%d", priority);
+            break;
+
+        case 2:
+
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor blueColor];
+
+            NSLog(@"%d", priority);
+
+            break;
+
+        case 3:
+
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor greenColor];
+
+            NSLog(@"%d", priority);
+
+            break;
+
+        default:
+            
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor grayColor];
+
+            NSLog(@"%d", priority);
+
+            break;
+            
+    }
+
+
+
+    self.swipePath = path;
+    if (path) {
+        NSLog(@"path");
+         UITableViewCell * cell = (UITableViewCell *)[self.tableView cellForRowAtIndexPath:path];
+        cell.textLabel.backgroundColor = [UIColor greenColor];
+        cell.backgroundColor = [UIColor redColor];
+        [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor blueColor];
+
+    }
+    [self.tableView cellForRowAtIndexPath:path].textLabel.text =@"bla" ;
+
+
+    [self.tableView cellForRowAtIndexPath:path].textLabel.backgroundColor = [UIColor grayColor];
+    [self.tableView cellForRowAtIndexPath:path].detailTextLabel.text =@"bla";
+//     [self.tableView cellForRowAtIndexPath:path].accessoryType = UITableViewCellAccessoryCheckmark;
+
+
+    [self.tableView reloadData];
+    NSLog(@"swipe %d", path.row);
+
+    self.swipe = YES;
+
+    oldPath = path;
+
+
+}
+
 - (IBAction)tapped:(UITapGestureRecognizer *)gesture {
     CGPoint point = [gesture locationInView:self.tableView];
 
@@ -99,11 +189,15 @@
         cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
 
         cell.textLabel.text = [self.array objectAtIndex:indexPath.row];
+//    cell.textLabel.backgroundColor = [UIColor grayColor];
 
         if ([[self.checks objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithBool:0]])
             cell.accessoryType = UITableViewCellAccessoryNone;
         else
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//    if (self.swipe) {
+//        cell.textLabel.backgroundColor =[UIColor greenColor];
+//    }
 
 return cell;
 }
@@ -117,13 +211,14 @@ return cell;
     return 1;
 }
 
-//can comment out following two methods. Why?
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
 //    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationLeft];
     [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+
 
     NSLog(@"delete");
 }
@@ -134,7 +229,9 @@ return cell;
 
     self.selectedIndexPath = indexPath;
     if (self.edit) {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+//        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        [tableView cellForRowAtIndexPath:indexPath].textLabel.backgroundColor = [UIColor redColor];
+
         [tableView reloadData];
         NSLog(@"didSelectRowAtIndexPath 2");
     }
