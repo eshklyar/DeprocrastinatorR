@@ -18,6 +18,8 @@
 @property NSMutableArray *checks;
 @property BOOL swipe;
 @property NSIndexPath *swipePath;
+@property NSMutableArray *prioritis;
+@property NSInteger priority;
 
 @end
 
@@ -31,89 +33,75 @@
     self.swipe = NO;
     self.checks = [NSMutableArray new];
     self.swipePath = [[NSIndexPath alloc]init];
+    self.prioritis = [NSMutableArray new];
+    NSLog(@"the count %ld", self.prioritis.count);
+    self.priority =0;
 }
 - (IBAction)swipeToChangeColor:(UISwipeGestureRecognizer *)swipeGesture {
 
+    [swipeGesture setDirection:(UISwipeGestureRecognizerDirectionRight)];
     CGPoint point = [swipeGesture locationInView:self.tableView];
-     [swipeGesture setDirection:(UISwipeGestureRecognizerDirectionRight)];
-
     NSIndexPath *path = [self.tableView indexPathForRowAtPoint:point];
-
-    NSIndexPath *oldPath;
-    if ([oldPath isEqual:path]) {
-        NSLog(@"equal");
-    } else {
-        NSLog(@"not equal");
-
-    }
-
-    int priority = 0;
-
-    if ([path isEqual:oldPath]) {
-        priority++;
-    }
-
-    switch (priority)
-
+    if (!self.edit)
     {
-        case 1:
+        if ((self.array.count !=0) && (self.prioritis.count !=0))
+        {
+            NSNumber *someNumber = [self.prioritis objectAtIndex:path.row];
+            self.priority = [someNumber integerValue];
 
-            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor redColor];
-
-            NSLog(@"%d", priority);
-            break;
-
-        case 2:
-
-            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor blueColor];
-
-            NSLog(@"%d", priority);
-
-            break;
-
-        case 3:
-
-            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor greenColor];
-
-            NSLog(@"%d", priority);
-
-            break;
-
-        default:
-            
-            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor grayColor];
-
-            NSLog(@"%d", priority);
-
-            break;
-            
-    }
-
-
-
-    self.swipePath = path;
-    if (path) {
-        NSLog(@"path");
-         UITableViewCell * cell = (UITableViewCell *)[self.tableView cellForRowAtIndexPath:path];
-        cell.textLabel.backgroundColor = [UIColor greenColor];
-        cell.backgroundColor = [UIColor redColor];
-        [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor blueColor];
+            if (self.priority < 4)
+            {
+                self.priority++;
+                [self.prioritis replaceObjectAtIndex:path.row withObject:[NSNumber numberWithInteger:self.priority]];
+            }
+            else
+            {
+                self.priority =1;
+                [self.prioritis replaceObjectAtIndex:path.row withObject:[NSNumber numberWithInteger:1]];
+            }
+//            [self changeRowColor:path withPriority:self.priority];
+    //          NSLog(@"priority 2 %ld", self.priority);
+        }
 
     }
-    [self.tableView cellForRowAtIndexPath:path].textLabel.text =@"bla" ;
+    else{
+//        [self.array removeObjectAtIndex:self.selectedIndexPath.row];
+        [self.prioritis removeObjectAtIndex:path.row];
+        NSLog(@"path %ld", path.row);
+
+    }
+//    if ([[self.tableView cellForRowAtIndexPath:path].backgroundColor isEqual:[UIColor whiteColor]]) {
+//        self.priority = 0;
+//    }
+//
+//else
+//    self.priority =1;
 
 
-    [self.tableView cellForRowAtIndexPath:path].textLabel.backgroundColor = [UIColor grayColor];
-    [self.tableView cellForRowAtIndexPath:path].detailTextLabel.text =@"bla";
+
+//    self.swipePath = path;
+//    if (path) {
+//        NSLog(@"path");
+//         UITableViewCell * cell = (UITableViewCell *)[self.tableView cellForRowAtIndexPath:path];
+//        cell.textLabel.backgroundColor = [UIColor greenColor];
+//        cell.backgroundColor = [UIColor redColor];
+//        [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor blueColor];
+//
+//    }
+//    [self.tableView cellForRowAtIndexPath:path].textLabel.text =@"bla" ;
+//
+//
+//    [self.tableView cellForRowAtIndexPath:path].textLabel.backgroundColor = [UIColor grayColor];
+//    [self.tableView cellForRowAtIndexPath:path].detailTextLabel.text =@"bla";
 //     [self.tableView cellForRowAtIndexPath:path].accessoryType = UITableViewCellAccessoryCheckmark;
 
 
     [self.tableView reloadData];
-    NSLog(@"swipe %d", path.row);
+//    NSLog(@"swipe %ld", (long)path.row);
 
-    self.swipe = YES;
+//    self.swipe = YES;
 
-    oldPath = path;
+//    oldPath = path;
 
 
 }
@@ -137,6 +125,11 @@
         {
             [self.array removeObjectAtIndex:self.selectedIndexPath.row];
             [self.checks removeObjectAtIndex:self.selectedIndexPath.row];
+            [self.prioritis removeObjectAtIndex:self.selectedIndexPath.row];
+            NSLog(@"%@",self.prioritis);
+             NSLog(@"%ld",self.selectedIndexPath.row);
+//            [self.tableView reloadData];
+
         }
 
         [self markRowsWithCheck:self.selectedIndexPath];
@@ -154,9 +147,37 @@
 
      [self.tableView reloadData];
 }
+-(void)changeRowColor:(NSIndexPath *)path withPriority:(NSInteger)priorityNumber
+
+{
+    switch (priorityNumber)
+    {
+        case 1:
+
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor redColor];
+            break;
+
+        case 2:
+
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor blueColor];
+            break;
+
+        case 3:
+
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor greenColor];
+            break;
+
+        default:
+
+            [self.tableView cellForRowAtIndexPath:path].backgroundColor = [UIColor whiteColor];
+            break;
+    }
+    [self.tableView reloadData];
+}
 - (IBAction)onAddBtnPressed:(id)sender {
     [self.array addObject:self.textField.text];
     [self.checks addObject:@NO];
+    [self.prioritis addObject:[NSNumber numberWithInteger:0]];
 
     [self.textField resignFirstResponder];
     [self.tableView reloadData];
@@ -195,9 +216,62 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         else
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+
+    NSNumber* value = [self.prioritis objectAtIndex:indexPath.row] ;
+
+    NSInteger valueNumber = [value integerValue];
+    switch (valueNumber)
+    {
+        case 1:
+
+        cell.backgroundColor = [UIColor redColor];
+            break;
+
+        case 2:
+
+        cell.backgroundColor = [UIColor blueColor];
+            break;
+
+        case 3:
+
+        cell.backgroundColor = [UIColor greenColor];
+            break;
+
+        default:
+
+        cell.backgroundColor = [UIColor whiteColor];
+            break;
+    }
+
+
+
+//    if ([[self.prioritis objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithInteger:1]]) {
+//        cell.backgroundColor = [UIColor redColor];
+//    } else if ([[self.prioritis objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithInteger:2]]){
+//        cell.backgroundColor = [UIColor blueColor];
+//    }else if ([[self.prioritis objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithInteger:3]]){
+//        cell.backgroundColor = [UIColor greenColor];
+//    }else if ([[self.prioritis objectAtIndex:indexPath.row] isEqualToNumber:[NSNumber numberWithInteger:0]]){
+//        cell.backgroundColor = [UIColor whiteColor];
+//    }
+
+
+
+
 //    if (self.swipe) {
 //        cell.textLabel.backgroundColor =[UIColor greenColor];
 //    }
+
+//    while (self.prioritis)
+//    {
+//        NSLog(@"bla");
+//        NSLog(@"the count bla %ld", self.prioritis.count);
+
+
+
+//        [self.tableView reloadData];
+//    [self resetColors:indexPath];
 
 return cell;
 }
@@ -257,9 +331,27 @@ return cell;
 
 //    [self.array addObject:self.textField.text];
 //
-//    [self.textField resignFirstResponder];
+    [self.textField resignFirstResponder];
 //    [self.tableView reloadData];
 
     return YES;
+}
+
+-(void)resetColors:(NSIndexPath*)indexPath{
+    for (NSInteger x=0; x< self.prioritis.count; x++)
+    {
+        //            NSNumber *i = [NSNumber numberWithInteger:x];
+        NSNumber * z = self.prioritis[x];
+        NSInteger i = [z integerValue];
+
+        //            int j = (int)i;
+        [self changeRowColor:indexPath withPriority:i]  ;
+        NSLog(@"bla bla");
+        NSLog(@"the count bla bla %ld", self.prioritis.count);
+
+        
+    }
+
+
 }
 @end
