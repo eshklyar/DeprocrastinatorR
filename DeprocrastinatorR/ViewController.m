@@ -34,7 +34,7 @@
     self.checks = [NSMutableArray new];
     self.swipePath = [[NSIndexPath alloc]init];
     self.prioritis = [NSMutableArray new];
-    NSLog(@"the count %ld", self.prioritis.count);
+//    NSLog(@"the count %ld", self.prioritis.count);
     self.priority =0;
 }
 - (IBAction)swipeToChangeColor:(UISwipeGestureRecognizer *)swipeGesture {
@@ -95,13 +95,17 @@
 }
 -(void)markRowsWithCheck:(NSIndexPath *)indexPath
 {
-    if (([self.checks[indexPath.row] isEqualToNumber:[NSNumber numberWithBool:1]]))
-        [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+    if (self.array.count > indexPath.row)
+    {
 
-    else
-        [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        if (([self.checks[indexPath.row] isEqualToNumber:[NSNumber numberWithBool:1]]))
+            [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
 
-     [self.tableView reloadData];
+        else
+            [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+
+         [self.tableView reloadData];
+    }
 }
 - (IBAction)onAddBtnPressed:(id)sender {
     [self.array addObject:self.textField.text];
@@ -112,8 +116,8 @@
     [self.tableView reloadData];
 }
 - (IBAction)onEditButtonPressed:(id)sender {
-    UIButton *button = (UIButton*)sender;
-    button.titleLabel.text = @"hello";
+//    UIButton *button = (UIButton*)sender;
+//    button.titleLabel.text = @"hello";
 
     if ([[sender currentTitle] isEqualToString:@"Edit"]) {
          [sender setTitle:@"Done" forState:UIControlStateNormal];
