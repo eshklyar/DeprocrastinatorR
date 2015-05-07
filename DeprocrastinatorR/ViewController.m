@@ -89,6 +89,7 @@
             [self.prioritis removeObjectAtIndex:self.selectedIndexPath.row];
             NSLog(@"%@",self.prioritis);
             NSLog(@"%ld",self.selectedIndexPath.row);
+            [self.tableView reloadData];
         }
         [self markRowsWithCheck:self.selectedIndexPath];
     }
@@ -109,11 +110,14 @@
 }
 - (IBAction)onAddBtnPressed:(id)sender {
     [self.array addObject:self.textField.text];
-    [self.checks addObject:@NO];
-    [self.prioritis addObject:[NSNumber numberWithInteger:0]];
+    if (self.array.count!=0) {
 
-    [self.textField resignFirstResponder];
-    [self.tableView reloadData];
+        [self.checks addObject:@NO];
+        [self.prioritis addObject:[NSNumber numberWithInteger:0]];
+ }
+        [self.textField resignFirstResponder];
+        [self.tableView reloadData];
+
 }
 - (IBAction)onEditButtonPressed:(id)sender {
 //    UIButton *button = (UIButton*)sender;
