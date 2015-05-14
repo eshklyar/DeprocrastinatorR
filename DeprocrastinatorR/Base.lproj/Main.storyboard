@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EOU-8B-mO3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EOU-8B-mO3">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -28,15 +28,24 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="v4G-PI-MRn"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDM-53-GEU">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDM-53-GEU">
                                 <rect key="frame" x="189" y="501" width="30" height="30"/>
                                 <state key="normal" title="Add"/>
                                 <connections>
                                     <action selector="onAddBtnPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="LjL-Ql-Cgf"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xay-yF-vD7">
+                                <rect key="frame" x="241" y="501" width="46" height="30"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onEditButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="2z8-p7-MFK"/>
+                                </connections>
+                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="EXx-z5-0eS">
-                                <rect key="frame" x="0.0" y="91" width="605" height="392"/>
+                                <rect key="frame" x="44" y="79" width="441" height="392"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="392" id="wzF-pG-9Lh"/>
@@ -63,29 +72,19 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="L74-Fd-j5f"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xay-yF-vD7">
-                                <rect key="frame" x="241" y="501" width="46" height="30"/>
-                                <state key="normal" title="Edit">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="onEditButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="2z8-p7-MFK"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="fDM-53-GEU" firstAttribute="leading" secondItem="v4U-1I-eXj" secondAttribute="trailing" constant="91" id="0mY-4c-shE"/>
+                            <constraint firstItem="fDM-53-GEU" firstAttribute="leading" secondItem="v4U-1I-eXj" secondAttribute="trailing" constant="64" id="0mY-4c-shE"/>
                             <constraint firstItem="v4U-1I-eXj" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="12" id="10b-zs-TgF"/>
-                            <constraint firstItem="EXx-z5-0eS" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="27" id="Hjh-eZ-Q8W"/>
-                            <constraint firstItem="v4U-1I-eXj" firstAttribute="top" secondItem="EXx-z5-0eS" secondAttribute="bottom" constant="18" id="lV4-aG-dam"/>
-                            <constraint firstItem="fDM-53-GEU" firstAttribute="top" secondItem="EXx-z5-0eS" secondAttribute="bottom" constant="18" id="sDe-MK-9Ue"/>
-                            <constraint firstAttribute="trailing" secondItem="EXx-z5-0eS" secondAttribute="trailing" constant="-5" id="xlc-QJ-IKv"/>
-                            <constraint firstItem="EXx-z5-0eS" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="zHy-zS-93w"/>
+                            <constraint firstItem="EXx-z5-0eS" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="15" id="Hjh-eZ-Q8W"/>
+                            <constraint firstItem="v4U-1I-eXj" firstAttribute="top" secondItem="EXx-z5-0eS" secondAttribute="bottom" constant="30" id="lV4-aG-dam"/>
+                            <constraint firstItem="fDM-53-GEU" firstAttribute="top" secondItem="EXx-z5-0eS" secondAttribute="bottom" constant="30" id="sDe-MK-9Ue"/>
+                            <constraint firstAttribute="trailing" secondItem="EXx-z5-0eS" secondAttribute="trailing" constant="115" id="xlc-QJ-IKv"/>
+                            <constraint firstItem="EXx-z5-0eS" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="44" id="zHy-zS-93w"/>
                         </constraints>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="cZc-Qw-wzw" appends="YES" id="srP-Bl-nD7"/>
                             <outletCollection property="gestureRecognizers" destination="jwu-OW-wYR" appends="YES" id="S7e-Am-6Zh"/>
                         </connections>
                     </view>
@@ -96,12 +95,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="cZc-Qw-wzw">
-                    <connections>
-                        <action selector="tapped:" destination="vXZ-lx-hvc" id="NMi-1t-iMN"/>
-                        <outlet property="delegate" destination="vXZ-lx-hvc" id="TFI-9h-VA5"/>
-                    </connections>
-                </tapGestureRecognizer>
                 <swipeGestureRecognizer direction="right" id="jwu-OW-wYR">
                     <connections>
                         <action selector="swipeToChangeColor:" destination="vXZ-lx-hvc" id="BtK-Sj-MnC"/>

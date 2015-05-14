@@ -27,6 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@".............................");
 
     self.array =[NSMutableArray new];
     self.edit=NO;
@@ -36,8 +37,134 @@
     self.prioritis = [NSMutableArray new];
 //    NSLog(@"the count %ld", self.prioritis.count);
     self.priority =0;
+
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]
+                                               initWithTarget:self action:@selector(longPressGestureRecognized:)];
+    [self.tableView addGestureRecognizer:longPress];
+}
+
+- (IBAction)longPressGestureRecognized:(id)sender
+{
+
+    UILongPressGestureRecognizer *longPress = (UILongPressGestureRecognizer *)sender;
+    UIGestureRecognizerState state = longPress.state;
+
+    CGPoint longGesturePoint = [longPress locationInView:self.tableView];
+    CGPoint sourcePoint;
+    CGPoint destinationPoint;
+
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:longGesturePoint];
+    NSIndexPath *sourceIndexPath;
+    NSIndexPath *destinationIndexPath;
+    UITableViewCell *cell;
+    BOOL gate =true;
+
+    switch (state) {
+        case ( UIGestureRecognizerStateBegan):
+        {
+//            gate = true;
+            if (gate)
+            {
+                sourceIndexPath = [self.tableView indexPathForRowAtPoint:longGesturePoint];
+    //            sourceIndexPath = tempIndexPath;
+                sourcePoint = longGesturePoint;
+//                NSLog(@"gate in begin 1 %d", gate);
+
+    //          NSLog(@"tempIndex %ld", (long)tempIndexPath.row);
+
+            }
+//            NSLog(@"index %ld", (long)indexPath.row);
+
+
+            NSLog(@"s1 %ld", (long)sourceIndexPath.row);
+            gate = false;
+//            NSLog(@"gate in begin 2 %d", gate);
+
+
+
+//        NSLog(@"begun object s %@", [self.array objectAtIndex:sourceIndexPath.row]);
+//        NSLog(@"row %ld", sourceIndexPath.row);
+
+            break;
+        }
+        case ( UIGestureRecognizerStateChanged):
+        {
+             gate = false;
+//            NSLog(@"gate in change %d", gate);
+            if (indexPath && ![indexPath isEqual:sourceIndexPath])
+            {
+//                NSLog(@"row %ld", sourceIndexPath.row);
+
+            cell = [self.tableView cellForRowAtIndexPath:indexPath];
+//            CGPoint center = cell.center;
+            destinationPoint = cell.center;
+
+            destinationPoint.y = longGesturePoint.y;
+            destinationIndexPath = [self.tableView indexPathForRowAtPoint:destinationPoint];
+
+            cell.center = destinationPoint;
+            [self.tableView addSubview:cell];
+
+//            NSLog(@"object s in change %@", [self.array objectAtIndex:sourceIndexPath.row]);
+//                NSLog(@"%d",gate);
+
+            destinationIndexPath = [self.tableView indexPathForRowAtPoint:destinationPoint];
+
+//            NSLog(@"object s %@", [self.array objectAtIndex:sourceIndexPath.row]);
+//            NSLog(@"object d %@", [self.array objectAtIndex:destinationIndexPath.row]);
+                NSLog(@"s2 %ld", (long)sourceIndexPath.row);
+
+
+
+            [self.array exchangeObjectAtIndex: sourceIndexPath.row  withObjectAtIndex:destinationIndexPath.row] ;
+
+//            NSLog(@"s3 %ld", (long)sourceIndexPath.row);
+//            NSLog(@"d %ld", (long)destinationIndexPath.row);
+
+
+//            NSLog(@"object s %@", [self.array objectAtIndex:sourceIndexPath.row]);
+//            NSLog(@"object d %@", [self.array objectAtIndex:destinationIndexPath.row]);
+//
+//
+//            [self.array exchangeObjectAtIndex: sourceIndexPath.row  withObjectAtIndex:destinationIndexPath.row] ;
+//
+//            NSLog(@"s %ld", (long)sourceIndexPath.row);
+//            NSLog(@"d %ld", (long)destinationIndexPath.row);
+
+
+            }
+          break;
+        }
+
+        case ( UIGestureRecognizerStateEnded):
+        {
+            NSLog(@".............................");
+
+
+//        destinationIndexPath = [self.tableView indexPathForRowAtPoint:destinationPoint];
+//
+//        NSLog(@"object s %@", [self.array objectAtIndex:sourceIndexPath.row]);
+//        NSLog(@"object d %@", [self.array objectAtIndex:destinationIndexPath.row]);
+//
+//
+//        [self.array exchangeObjectAtIndex: sourceIndexPath.row  withObjectAtIndex:destinationIndexPath.row] ;
+//
+//        NSLog(@"s %ld", (long)sourceIndexPath.row);
+//        NSLog(@"d %ld", (long)destinationIndexPath.row);
+
+
+            [self.tableView reloadData];
+        sourceIndexPath = nil;
+        destinationIndexPath=nil;
+            gate = true;
+//        cell=nil;
+        }
+        default:
+            break;
+        }
 }
 - (IBAction)swipeToChangeColor:(UISwipeGestureRecognizer *)swipeGesture {
+    swipeGesture.cancelsTouchesInView = NO;
 
     [swipeGesture setDirection:(UISwipeGestureRecognizerDirectionRight)];
     CGPoint point = [swipeGesture locationInView:self.tableView];
@@ -68,6 +195,36 @@
 
     [self.tableView reloadData];
 }
+//- (IBAction)Pan:(UIPanGestureRecognizer *)panGestureRecognizer {
+//    int i;i++;
+//  NSLog(@"moving bla %d",i);
+//
+//
+//
+//
+//    CGPoint originalPosition = [panGestureRecognizer locationInView:self.tableView];
+//    CGPoint translationPoint = [panGestureRecognizer translationInView:self.tableView];
+//
+//    NSIndexPath *originalPath = [self.tableView indexPathForRowAtPoint:originalPosition];
+//
+//    UIView *cellView = [self.tableView cellForRowAtIndexPath:originalPath];
+//
+//
+//
+//    panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x + translationPoint.x, panGestureRecognizer.view.center.y + translationPoint.y);
+//
+////    panGestureRecognizer.view.center = CGPointMake(panGestureRecognizer.view.center.x + translationPoint.x,
+////                                         panGestureRecognizer.view.center.y + translationPoint.y);
+//    [panGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.tableView];
+//
+//    if (panGestureRecognizer.state == UIGestureRecognizerStateEnded)
+//    {
+//        CGPoint finalPoint = panGestureRecognizer.view.center;
+//        NSIndexPath *finalPath = [self.tableView indexPathForRowAtPoint:finalPoint];
+//
+//        [self.array replaceObjectAtIndex:originalPath.row withObject:[self.array objectAtIndex:finalPath.row]];
+//    }
+//}
 
 - (IBAction)tapped:(UITapGestureRecognizer *)gesture {
     CGPoint point = [gesture locationInView:self.tableView];
@@ -138,7 +295,7 @@
     [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
-#pragma mark tableView
+#pragma mark - tableView
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
@@ -152,7 +309,6 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         else
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
-
 
     NSNumber* value = [self.prioritis objectAtIndex:indexPath.row] ;
 
@@ -172,6 +328,8 @@
         default: cell.backgroundColor = [UIColor whiteColor];
             break;
     }
+//    NSLog(@"priorities %@",self.prioritis[indexPath.row]);
+
 return cell;
 }
 
@@ -185,6 +343,9 @@ return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == [self.array count] ) {
+        return NO;
+    }
     return YES;
 }
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -200,18 +361,77 @@ return cell;
     NSLog(@"didSelectRowAtIndexPath method is called");
 
     self.selectedIndexPath = indexPath;
-    if (self.edit) {
-        [tableView cellForRowAtIndexPath:indexPath].textLabel.backgroundColor = [UIColor redColor];
-
-        [tableView reloadData];
-        NSLog(@"didSelectRowAtIndexPath 2");
+    if ((self.array.count !=0) && (self.checks.count !=0))
+    {
+        if (!self.edit)
+        {
+            if ([[self.checks objectAtIndex:self.selectedIndexPath.row] isEqualToNumber:[NSNumber numberWithBool:0]])
+                [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@YES];
+            else
+                [self.checks replaceObjectAtIndex:self.selectedIndexPath.row withObject:@NO];
+        }
+        else
+        {
+            [self.array removeObjectAtIndex:self.selectedIndexPath.row];
+            [self.checks removeObjectAtIndex:self.selectedIndexPath.row];
+            [self.prioritis removeObjectAtIndex:self.selectedIndexPath.row];
+            NSLog(@"%@",self.prioritis);
+            NSLog(@"%ld",self.selectedIndexPath.row);
+            [self.tableView reloadData];
+        }
+        [self markRowsWithCheck:self.selectedIndexPath];
     }
-    
+
+//    if (self.edit) {
+//        [tableView cellForRowAtIndexPath:indexPath].textLabel.backgroundColor = [UIColor redColor];
+//
+//        [tableView reloadData];
+//        NSLog(@"didSelectRowAtIndexPath 2");
+//    }
+
 }
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
      NSLog(@"didDeselectRowAtIndexPath");
 }
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
+}
+
+
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"canMoveRowAtIndexPath");
+
+    if (indexPath.row == [self.array count]) {
+        return NO;
+    }
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+    NSLog(@"moveRowAtIndexPath");
+
+    NSString *item = [self.array objectAtIndex:fromIndexPath.row];
+    [self.array removeObjectAtIndex:fromIndexPath.row];
+    [self.array insertObject:item atIndex:toIndexPath.row];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    NSLog(@"targetIndexPathForMoveFromRowAtIndexPath");
+
+    if ([proposedDestinationIndexPath row] < [self.array count])
+    {
+        return proposedDestinationIndexPath;
+    }
+    NSIndexPath *betterIndexPath = [NSIndexPath indexPathForRow:[self.array count]-1 inSection:0];
+    return betterIndexPath;
+}
+
+
+
 
 #pragma mark textFiled
 
@@ -227,4 +447,41 @@ return cell;
     return YES;
 }
 
+
+- (UIView *)customSnapshotFromView:(UIView *)inputView {
+
+    // Make an image from the input view.
+    UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, NO, 0);
+    [inputView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    // Create an image view.
+    UIView *snapshot = [[UIImageView alloc] initWithImage:image];
+    snapshot.layer.masksToBounds = NO;
+    snapshot.layer.cornerRadius = 0.0;
+    snapshot.layer.shadowOffset = CGSizeMake(-5.0, 0.0);
+    snapshot.layer.shadowRadius = 5.0;
+    snapshot.layer.shadowOpacity = 0.4;
+    
+    return snapshot;
+}
+//- (UIView *)customSnapshotFromView:(UIView *)inputView {
+//
+//    // Make an image from the input view.
+//    UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, NO, 0);
+//    [inputView.layer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//
+//    // Create an image view.
+//    UIView *snapshot = [[UIImageView alloc] initWithImage:image];
+//    snapshot.layer.masksToBounds = NO;
+//    snapshot.layer.cornerRadius = 0.0;
+//    snapshot.layer.shadowOffset = CGSizeMake(-5.0, 0.0);
+//    snapshot.layer.shadowRadius = 5.0;
+//    snapshot.layer.shadowOpacity = 0.4;
+//
+//    return snapshot;
+//}
 @end
